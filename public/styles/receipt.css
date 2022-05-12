@@ -1,0 +1,21 @@
+.order-details {
+    display: flex;
+}
+#field2 {
+    padding-left: 50px;
+}
+
+img {
+    width: 120px;
+    height: 120px;
+    margin: 20px;
+    margin-top: 13px;
+}
+
+#inner_template {
+    display: flex;
+}
+
+body {
+    background-color: rgba(190, 230, 233, 0.349);
+}

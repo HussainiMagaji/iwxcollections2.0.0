@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>receipt</title>
+        <meta charset="utf-8">
+        <style> @import "/styles/receipt.css"; </style>
+    </head>
+    <body>
+        <span class="order-details">
+          <span id="field1">
+            <p><b>Order details: </b></p>
+	    <span><b>Order ID:</b> <%= user.orderId %></span><br><br>
+	    <span><b>R.R.R.:</b>   <%= user.RRR %></span><br><br>
+            <span><b>Date:</b>     2022-04-23 16:49:17</span>
+          </span>
+          <span id="field2">
+            <p><b>Delivery Info:</b></p>
+	    <p><b>Name:   </b> <%= user.name %></p>
+	    <p><b>Phone:  </b> <%= user.phone %></p>
+	    <p><b>Address:</b> <%= user.address %></p>
+          </span>
+        </span>
+        <br>
+        <span id="template">
+            <b>Cart Summary:</b>
+
+	    <% user.cart_items.forEach((item) => { %>
+	    <span id="inner_template">                                            <img src= <%= "/images/album/" + item.url %> >
+                    <span><br>
+			<span>Name: <%= item.name %></span><br>
+                        <span>Category: </span><br>
+                        <span>Color: </span> <br>
+                        <span>Size: </span>  <br>
+			<span>Quantity: <%= item.quantity %> </span><br>
+			<span>Amount: <%= Number(item.quantity) * (Number(item.price) + ((10/100) * item.price)) %> </span>
+                    </span>
+                </span>
+	    <% }) %>
+
+        </span>
+	<p><b>Total: <%= user.amount %> </b></p>
+        <footer><p>Enjoy shopping with us.<br>
+                 iwx 2022. All rights reserved.</p></footer>
+    </body>
+</html>

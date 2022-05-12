@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Invoice</title>
+    <style> 
+      <%- include('/storage/emulated/0/IWX2.0.0/iwx_collections/public/styles/invoice.css'); %>  
+    </style>
+  </head>
+
+  <body>
+     <div class="invoice-box">
+       <table cellpadding="0" cellspacing="0">
+         <tr class="top">
+	   <td colspan="4">
+	     <table>
+	       <tr>
+	         <td class="title">
+		   <img src="https://www.sparksuite.com/images/logo.png" style="width: 100%; max-width: 300px" />
+		 </td>
+                 <td>
+		   R.R.R: <%= user.RRR %> <br />
+		   Order ID: <%= user.orderId %> <br />
+		   Date: <%= new Date( ) %>
+		 </td>
+		</tr>
+	      </table>
+	    </td>
+	  </tr>
+          <tr class="information">
+	    <td colspan="4">
+	      <table>
+	        <tr>
+	          <td>							              iwxcollections, BN.<br />
+		    No. 29 Area 1W, UDUS<br />
+		    Wamakko, Sokoto State
+		  </td>
+                  <td>
+		    <%= user.address %><br>
+		    <%= user.lga %>, <%= user.state %><br>
+		    <%= user.name %><br>
+		    <%= user.email %>
+		  </td>
+		</tr>
+	      </table>
+	    </td>
+	  </tr>
+          <tr class="heading">
+	    <td>Image</td>
+	    <td>Name</td>
+	    <td>Quantity</td>
+            <td>Amount(&#8358;)</td>
+	  </tr>
+
+          <% user.cart_items.forEach(item => { %>
+	       <tr class="item">
+		 <td>
+		  <img class="item" src= <%= `https://www.iwxcollections.ml/images/album/${item.url}` %> >
+		 </td>
+		 <td><%= item.name %></td>
+		 <td><%= item.quantity %></td>
+		 <% let amount = Number(item.price) * item.quantity; %>
+		 <td><%= (amount +  (10/100 * (amount))).toLocaleString(); %></td>
+               </tr>
+	  <% }); %>
+
+          <tfoot class="total">
+	    <td>
+	      Transport: &#8358;1,000<br>
+	      Total: &#8358;<%=user.amount.toLocaleString();%>
+	    </td>
+	  </tfoot>
+	</table>
+      </div>
+  </body>
+</html>

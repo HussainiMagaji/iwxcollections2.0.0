@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Account</title>
+    <style> @import "/styles/account.css"; </style>
+  </head>
+
+  <body>
+  <%- include("navbar.html"); -%>
+
+    <br>
+    <br>
+
+    <div id="account">
+
+      <div id="profile">
+	<header>PROFILE</header>
+	<img id="pic" src="/images/navbar/account.svg">
+	<span id="email-holder"><%= email %></span>
+      </div>
+	  
+      <table id=orders-holder>
+        <thead>
+          <td>ID</td>
+          <td>RRR</td>
+          <td>DATE</td>
+        </thead>
+        <tbody>
+        <% orders.forEach(order => { %>
+          <tr>
+            <td><%= order.orderId %></td>
+            <td><%= order.RRR %></td>
+            <td><%= order.orderDate %></td>
+          </tr>
+        <% }) %>
+        </tbody>
+      </table>
+
+    </div>
+
+    <!--<script src="/scripts/account.js"></script>-->
+  </body>
+</html>
+
