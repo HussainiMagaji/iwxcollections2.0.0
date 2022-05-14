@@ -30,14 +30,14 @@ module.exports = function(app) {
 	      }
             });
 
-	    let compiled = ejs.compile(fs.readFileSync('/storage/emulated/0/IWX2.0.0/iwx_collections/views/invoice.ejs', 'utf8'));
+	    let compiled = ejs.compile(fs.readFileSync('/root/iwxcollections2.0.0/views/invoice.ejs', 'utf8'));
             const html = compiled({ user : user });
 	    const pdf = await generatePDF(html);
 
 	    Cart.clear(cart); //empty cart
 	    user.cart_items = [ ];
 
-	    res.set('Content-Type', 'application/pdf');
+	    res.set('Content-Type', 'image/png');
 	    res.send(pdf);
 	     
 	  } break;
