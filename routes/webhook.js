@@ -44,7 +44,6 @@ module.exports = function(app) {
       subject: 'IWXCOLLECTIONS SUPPLIER INVOICE', 
       attachments: [
         {
-          cid: 'supplier_invoice',
           contentType: 'image/png',
           filename: 'supplier_invoice.png',
           content: supplier_invoice
