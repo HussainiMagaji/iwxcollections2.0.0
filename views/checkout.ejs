@@ -16,25 +16,12 @@
 	<input id="phone" name="phone" type="tel"required><br>
 	<label for="state">State:</label>
 	<select  id="state" name="state">
-	  <option>Abuja</option>
-	  <option>Adamawa</option>
-	  <option>Bauchi</option>
-	  <option>Borno</option>
-	  <option>Gombe</option>
-	  <option>Jigawa</option>
-	  <option>Kaduna</option>
-	  <option>Kano</option>
-	  <option>Katsina</option>
-	  <option>Kebbi</option>
-	  <option>Niger</option>
-	  <option>Nassarawa</option>
-	  <option>Plateau</option>
-	  <option>Sokoto</option>
-	  <option>Yobe</option>
-	  <option>Zamfara</option>
+          <% states.forEach(state => { %>
+            <option> <%= state %> </option>
+          <% }); %>
 	</select><br>
 	<label for="lga">LGA:</label>
-	<input id="lga" name="lga" type="text">
+	<select id="lga" name="lga"></select><br>
         <label for="address">Address:</label>
 	<input id="address" name="address"type="text"required>
       </div><br>

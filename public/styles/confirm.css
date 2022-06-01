@@ -1,0 +1,29 @@
+body {
+  font-size: 5em;
+  background-color: rgba(190, 230, 233, 0.349); 
+}
+
+div {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
+
+img {
+  border: 1px solid #ddd; /* Gray border */
+  border-radius: 4px;  /* Rounded border */
+  padding: 5px; /* Some padding */
+  width: 200px;
+}
+
+button {
+  width: 200px;
+  font-size: 25px;
+  background: green;
+  border-radius: 3px;
+}
+
+button a {
+  text-decoration: none;
+  color: white;
+}

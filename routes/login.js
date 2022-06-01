@@ -1,6 +1,6 @@
-const connection = require('../lib/server/config.js');
-const validateEmail = require('../lib/email/validate.js');
-const { get_customer_orders } = require('../lib/server/query.js');
+const { validateEmail } = require('../lib/email.js');
+const { verify_customer,
+        get_customer_orders } = require('../lib/server/query.js');
 
 module.exports = function(app) {
 
@@ -20,6 +20,7 @@ module.exports = function(app) {
         res.render('login.ejs', { error_message: null });
     }
   });
+
                                 
   app.get('/account', async (req, res) => {
     let user = req.session.user;
@@ -29,7 +30,8 @@ module.exports = function(app) {
     });
   });
 
-  app.post('/login', (req, res) => {
+
+  app.post('/login', async (req, res) => {
     //validate email
     if(!req.body.email || !req.body.password) {
       res.render('login.ejs', { error_message: 'Incomplete inputs!' });
@@ -42,43 +44,17 @@ module.exports = function(app) {
     }
     
     //verify existence and authentify password
-    connection.query(`CALL VERIFY_CUSTOMER('${JSON.stringify(req.body)}');`, (error, result) => {
-      if (error) {
-        res.render('login.ejs', { error_message: error.message });
-      } else {
-        req.session.user = result[0][0];
-        req.session.login = 1; // user is logged in
-        res.redirect(req.session.login_referer);
-      }
-    });
-  });
+    let result;
+    try {
+      result = await verify_customer(req.body);
 
-  app.post('/signup', (req, res) => {
-    //validate email
-    if(!req.body.email || !req.body.password || !req.body.cpassword) {
-      res.render('login.ejs', { error_message: 'Incomplete inputs!' });
-      return;
-    }
+      req.session.user = result;
+      req.session.login = 1; // user is logged in
+      res.redirect(req.session.login_referer);
 
-    if(!validateEmail(req.body.email)) {
-      res.render('login.ejs', { error_message: 'Invalid e-mail!' });
-      return;
-    }
-    //verify email uniqueness
-    if(req.body.password !== req.body.cpassword) {
-      res.render('login.ejs', { error_message: 'Passwords not matched!' });
-      return;
-    }
-    
-    connection.query(`CALL ADD_CUSTOMER( '${JSON.stringify(req.body)}' )`, (error, result) => {
-      if (error) {
+    } catch(error) {
         res.render('login.ejs', { error_message: error.message });
-      } else {
-        req.session.user = result[0][0];
-        req.session.login = 1; // user is logged in
-        res.redirect(req.session.login_referer);
-      }
-    });
+    }
 
   });
 

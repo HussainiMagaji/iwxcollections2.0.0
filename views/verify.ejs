@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+
+ <head>
+
+  <meta charset="utf-8">
+  <title>Email Verification</title>
+  <style>
+   body {
+     background: rgba(190, 230, 233, 0.349);
+     text-align: center;
+     font-size: 70px;
+   }
+
+   h1 { text-align: center; }
+
+   header, footer {
+     padding: 20px;
+     color: purple;
+     background: rgb(137, 154, 252);
+     text-align: center;
+   }
+  </style>
+
+ </head>
+
+ <body>
+
+  <header> <b>IWXCOLLECTIONS<b> </header>
+
+  <h2>Verify your email address</h2>
+  Hello <%= email %>, <br>
+  Please click this <a href= <%=`https://www.iwxcollections.ml/verify/${token}`%> >verification link</a> to verify your email address in order to start using iwxcollections services. <br>
+  <br>
+  Or copy and paste the link below in your web browser: <br>
+  https://www.iwxcollections.ml/verify/<%=token %>
+  <br>
+
+  <footer>
+   <a href="https://www.iwxcollections.ml">Official website</a> <br>
+   Copyright 2022
+  </footer>
+
+ </body>
+
+</html>

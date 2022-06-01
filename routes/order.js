@@ -13,13 +13,13 @@ module.exports = function(app) {
     Object.assign(user, req.body);
 
     if(Object.keys(req.body).length < 5) {
-       res.redirect('/checkout');
+       res.send('SOME INPUT FIELDS ARE EMPTY');
        return;
     } else {
        Object.keys(req.body).forEach(key => {
 	 let value = req.body[key].trim( );
 	 if(!value || value == '') {
-	   res.redirect('/checkout');
+	   res.send('SOME INPUT FIELDS ARE EMPTY');
 	   return;
 	 }
        });

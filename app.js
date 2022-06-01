@@ -7,10 +7,11 @@ const logger = require('morgan');
 const path = require('path');
 const mysql = require('mysql2');
 const MySQLStore = require('express-mysql-session');
+const { secretKey } = require('./lib/misc.js');
 
 const connection = require('./lib/server/config.js');
 
-let app = express();
+const app = express();
 const { rejects } = require('assert');
 
 let sessionStore = new MySQLStore({}, connection.promise( ));
@@ -28,7 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  secret: '/^+([-]?+)*@+([-]?)*({2,3})+$/secretus-x-o-x',
+  secret: secretKey,
   store: sessionStore,
   resave: false,
   saveUninitialized: false,
@@ -49,6 +50,7 @@ require('./routes/index.js')(app); /* '/', '/home' */
 require('./routes/shop.js')(app); /* '/shop' */
 require('./routes/products.js')(app); /* '/products/:idx' */
 require('./routes/login.js')(app); /* '/login', '/account' */
+require('./routes/signup.js')(app); /* '/signup' */
 require('./routes/cart.js')(app);  /* '/cart' */
 require('./routes/checkout.js')(app); /* /checkout */
 require('./routes/order.js')(app); /* POST: /oreder */
