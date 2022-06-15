@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>supplier_invoice</title>
+    <head>                                                                          
+        <title>supplier_invoice</title>                                             
         <meta charset="utf-8">
-        <style> 
-          <%- include('/root/iwxcollections2.0.0/public/styles/supplier_invoice.css'); %>
+        <style>
+          <%- include('/root/iwxcollections2.0.0/public/styles/supplier_invoice.css'); %>                                                                       
         </style>
     </head>
     <body>
@@ -17,17 +17,17 @@
                      <%= supplier.supplier_first_name %>
                      <%= supplier.supplier_second_name %>
                    </span>
-                   <span id="supplier_phone">Phone: 
+                   <span id="supplier_phone">Phone:                                              
                      <%= supplier.supplier_phone_number %>
                    </span>
                 </div>
 
                 <div>
                    <span id="supplier_email">Email:
-                     <%= supplier.supplier_email %> 
+                     <%= supplier.supplier_email %>                                            
                    </span>
                    <span id="supplier_account">Account:
-                     <%= supplier.supplier_account_number %> 
+                     <%= supplier.supplier_account_number %>                                   
                    </span>
                 </div>
 
@@ -38,7 +38,8 @@
                       <th id="quantity">Quantity</th>
                       <th id="price">Price</th>
                    </tr>
-                                     
+
+                   <% let total = 0; %>
                    <% map.get( supplier ).forEach( order => { %>
                       <tr>
                         <td>
@@ -48,11 +49,12 @@
                         <td> <%= order.quantity %> </td>
                         <td> <%= order.price %> </td>
                       </tr>
+                      <% total += (Number(order.price) * order.quantity); %>
                    <% }); %>
-
+                   <tfoot>TOTAL: &#8358;<%=total.toLocaleString();%></tfoot>
                 </table>
              </div>
         <% }); %>
- 
+
     </body>
 </html>
