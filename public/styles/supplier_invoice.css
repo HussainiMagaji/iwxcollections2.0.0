@@ -1,18 +1,18 @@
-body {
+body {                                                                          
     max-width: 800px;
     margin: auto;
     padding: 30px;
-    border: 1px solid #eee;
+    border: 1px solid #eee;                                                     
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     font-size: 16px;
     line-height: 24px;
     font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
     color: #555;
 }
-
+                                                                            
 #supplier_div {
     font-weight: bold;
-}
+}                                                                                                                                                       
 
 #supplier_phone {
     margin: 20%;
@@ -33,11 +33,11 @@ body {
     border: 1px solid black;
     margin: 0px;
 }
-
+                                                                            
 #quantity, #price {
     width: 10%;
     border: 1px solid black;
-    margin: 0px;
+    margin: 0px;                                                            
 }
 /*
  * #price {
@@ -54,15 +54,16 @@ table {
 td {
     height: 80px;
     border: 1px solid black;
-    padding-left: 5%; 
-    margin: 0px;  
+    padding-left: 5%;
+    margin: 0px;
 }
 
 img {
     height: 90%;
     width: 50%;
+    padding-left: 30%;
 }
 
-h1 {
+h1 {                                                                            
     font-family: fantasy;
 }
