@@ -11,6 +11,7 @@ const { checkRRRStatus } = require('../lib/remita/remita.js');
 const { get_products_supplier_mapping } = require('../lib/server/query.js');
 const { sendMail } = require('../lib/email.js');
 
+const s_html = '/root/iwxcollections2.0.0/views/supplier_html.ejs';
 const c_invoice = '/root/iwxcollections2.0.0/views/invoice.ejs';
 const s_invoice = '/root/iwxcollections2.0.0/views/supplier_invoice.ejs';
 
@@ -19,14 +20,17 @@ module.exports = function(app) {
 
   app.get('/invoice', async (req, res) => {
 
-    let user = req.session.user;
+    let user = req.session.temp_user;
 
     if(!user.email) {
       return;
     }
 
-    if(user.temp_invoice_html) {
-      let customer_invoice = await generateInvoice(user.temp_invoice_html)
+    if(user) {
+      let compiled_customer = ejs.compile(fs.readFileSync(c_invoice, 'utf8'));
+      let customer_html = compiled_customer({ user : user });
+      let customer_invoice = await generateInvoice(customer_html);
+
       res.set('Content-Type', 'image/png');
       res.send(customer_invoice);
     }
@@ -63,15 +67,37 @@ module.exports = function(app) {
         let compiled_customer = ejs.compile(fs.readFileSync(c_invoice, 'utf8'));
         let compiled_supplier = ejs.compile(fs.readFileSync(s_invoice, 'utf8'));
 
+        const map = await get_products_supplier_mapping(user.cart_items);
+
+
         let customer_html = compiled_customer({ user : user });
-        let supplier_html = compiled_supplier({ map: await get_products_supplier_mapping(user.cart_items) });
+        let supplier_html = compiled_supplier({ user: user, map: map });
+
 
         const customer_invoice = await generateInvoice(customer_html);
         const supplier_invoice = await generateInvoice(supplier_html);
 
-        //TODO
-        sendMail({                                                                    from: 'iwxcollections',                                                     to: 'hussainimagaji99@gmail.com', //iwxcollections@email...
-          subject: 'IWXCOLLECTIONS SUPPLIER INVOICE',
+        //TODO send ordesr to corresponding suppliers
+        
+        Array.from(map.keys( )).forEach(supplier => {
+          sendMail({
+            from: 'iwxcollections',
+            to: supplier.supplier_email,
+            subject: 'IWXCOLLECTIONS SUPPLIER ORDER',
+            html: (ejs.compile(fs.readFileSync(s_html, 'utf8')))({
+                     user: user,
+                     supplier: supplier,
+                     orders: map.get(supplier)
+                  })
+          });
+        });
+        
+
+        // Send customer order to iwx
+        sendMail({
+          from: 'iwxcollections',
+          to: 'iwxcollections@gmail.com',
+          subject: 'IWXCOLLECTIONS SUPPLIERS INVOICE',
           attachments: [
             {
                contentType: 'image/png',
@@ -79,7 +105,9 @@ module.exports = function(app) {
                content: supplier_invoice
             }                                                                         ]
         });
-                                                                                    sendMail({
+             
+        // Send invoice to customer
+        sendMail({
           from: 'iwxcollections',                                                     to: user.email,
           subject: 'IWXCOLLECTIONS CUSTOMER INVOICE',
           attachments: [                                                                {                                                                              contentType: 'image/png',
@@ -87,7 +115,9 @@ module.exports = function(app) {
                content: customer_invoice
             }
           ]
-        });                                                                                                                                                     user.temp_invoice_html = customer_html;
+        });
+
+        Object.assign(req.session.temp_user, user);
         Cart.clear(cart);
         user.cart_items = [ ];
         user.amount = 0;

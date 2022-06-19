@@ -6,6 +6,7 @@
 let fs = require('fs');
 let app = require('../app');
 let debug = require('debug')('iwxcollections:server');
+let http = require('http');
 let https = require('https');
 
 const cert_path = '/etc/letsencrypt/live/www.iwxcollections.ml';
@@ -33,6 +34,12 @@ let server = https.createServer(credentials, app);
  */
 
 server.listen(port);
+
+// Redirect from http port 80 to http...
+http.createServer(function (req, res) {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
+}).listen(80);
 
 server.on('error', onError);
 server.on('listening', onListening);
